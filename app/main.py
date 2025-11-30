@@ -8,7 +8,7 @@ from .simulated_feed import router as feed_router
 
 Base.metadata.create_all(bind=engine)
 
-app = FastAPI(title="Flight Search API - Milestone 1")
+app = FastAPI(title="TheFlightKompany")
 app.include_router(feed_router)
 
 def get_db():
@@ -66,3 +66,4 @@ def search(
         limit=limit,
     )
     return results
+
