@@ -48,5 +48,32 @@ def search_flights(
         q = q.order_by(order)
     else:
         q = q.order_by(models.Flight.departure)
+        
 
     return q.offset(skip).limit(limit).all()
+
+
+def update_flight_price(db: Session, flight: models.Flight, new_price: float, reason: str = ""):
+    # update the flight price and optionally create a pricing history record
+    old_price = flight.price
+    flight.price = float(new_price)
+    db.add(flight)
+    # add pricing history
+    ph = models.PricingHistory(
+        flight_id=flight.id,
+        old_price=old_price,
+        new_price=new_price,
+        changed_at=datetime.utcnow(),
+        reason=reason[:255]
+    )
+    db.add(ph)
+    db.commit()
+    db.refresh(flight)
+    return flight
+
+def get_all_flights_for_simulation(db: Session):
+    # return flights we want to simulate (you can filter by upcoming dates)
+    from datetime import datetime, timedelta
+    now = datetime.utcnow()
+    soon = now + timedelta(days=60)  # simulate flights within next 60 days
+    return db.query(models.Flight).filter(models.Flight.departure <= soon).all()
