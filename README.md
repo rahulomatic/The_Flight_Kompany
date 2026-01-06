@@ -1,3 +1,7 @@
+The deployment link : https://the-flite-kompany.onrender.com
+
+A web-based Flight Booking Simulator that mimics real-world airline reservation systems, incorporating a dynamic pricing engine. 
+
 The current directory structure [important] can be summarized as:
 flight_project/
   app/
