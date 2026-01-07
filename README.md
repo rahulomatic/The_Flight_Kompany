@@ -1,4 +1,4 @@
-The deployment link : https://the-flite-kompany.onrender.com
+The deployment link : [https://the-flite-kompany.onrender.com](https://the-flight-kompany.onrender.com)
 
 A web-based Flight Booking Simulator that mimics real-world airline reservation systems, incorporating a dynamic pricing engine. 
 
