@@ -1,0 +1,10 @@
+fastapi
+uvicorn
+gunicorn
+sqlalchemy
+pydantic
+pydantic-settings
+requests
+faker
+python-dotenv
+email-validator
