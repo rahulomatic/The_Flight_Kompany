@@ -4,7 +4,7 @@ content %}
 
 <p><strong>Route:</strong> {{ flight.source }} → {{ flight.destination }}</p>
 <p><strong>Departure:</strong> {{ flight.departure_time }}</p>
-<p><strong>Price:</strong> ₹{{ flight.price }}</p>
+<!--<p class="price-tag">₹{{ flight.get_dynamic_price }}</p>-->
 
 <form method="POST" class="booking-form">
   <input type="text" name="name" placeholder="Passenger Name" required />
@@ -27,12 +27,17 @@ content %}
     {% endfor %}
   </div>
 
+  <div class="seat-legend">
+    <span><span class="legend available"></span> Available</span>
+    <span><span class="legend selected"></span> Selected</span>
+    <span><span class="legend booked"></span> Booked</span>
+  </div>
+
   <input type="hidden" name="seat" id="seatInput" required />
 
   <button type="submit">Confirm Booking</button>
 </form>
 
-<!-- ✅ SCRIPT MUST BE INSIDE content block -->
 <script>
   document.addEventListener("DOMContentLoaded", function () {
     const seats = document.querySelectorAll(".seat");

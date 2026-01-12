@@ -4,6 +4,9 @@ from models.flight import Flight
 from models.booking import Booking
 from extensions import db
 from flask import abort
+from pricing import calculate_dynamic_price
+from datetime import datetime
+
 
 bookings_bp = Blueprint("bookings", __name__)
 
@@ -13,26 +16,26 @@ def book_flight(flight_id):
     flight = Flight.query.get_or_404(flight_id)
 
     if request.method == "POST":
-        # 🔒 CHECK 1: no seats left
-        if flight.available_seats <= 0:
-            return "No seats available"
-
         selected_seat = request.form["seat"]
 
-        # 🔒 CHECK 2: prevent double booking
+        # 🔒 prevent double booking
         existing = Booking.query.filter_by(
             flight_id=flight.id,
             seat_number=selected_seat
         ).first()
-
         if existing:
             return "Seat already booked"
+
+        # 💰 FREEZE PRICE AT BOOKING TIME (THIS IS THE KEY)
+        booking_price = flight.get_dynamic_price()
+
 
         booking = Booking(
             user_id=current_user.id,
             flight_id=flight.id,
             passenger_name=request.form["name"],
-            seat_number=selected_seat
+            seat_number=selected_seat,
+            price=booking_price      # ✅ STORED HERE
         )
 
         flight.available_seats -= 1
@@ -41,6 +44,7 @@ def book_flight(flight_id):
         db.session.commit()
 
         return redirect(url_for("bookings.my_bookings"))
+
 
     # GET request → show seat map
     booked_seats = [
@@ -51,7 +55,17 @@ def book_flight(flight_id):
     return render_template(
         "book.html",
         flight=flight,
-        booked_seats=booked_seats
+        booked_seats=booked_seats,
+        price = calculate_dynamic_price(
+            base_fare=flight.base_fare,
+            available_seats=flight.available_seats,
+            total_seats=flight.total_seats,
+            departure_time=flight.departure_time,
+            demand_level="medium",
+            pricing_tier=flight.pricing_tier
+        )
+
+
     )
 
 
@@ -125,7 +139,10 @@ def download_ticket(booking_id):
     ))
     elements.append(Paragraph(f"<b>Departure:</b> {flight.departure_time}", styles["Normal"]))
     elements.append(Paragraph(f"<b>Seat:</b> {booking.seat_number}", styles["Normal"]))
-    elements.append(Paragraph(f"<b>Price:</b> ₹{flight.price}", styles["Normal"]))
+    elements.append(
+    Paragraph(f"<b>Price:</b> ₹{booking.price}", styles["Normal"])
+)
+
     elements.append(Spacer(1, 0.4 * inch))
 
     elements.append(Paragraph(

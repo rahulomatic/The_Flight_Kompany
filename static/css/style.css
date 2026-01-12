@@ -1,3 +1,19 @@
+:root {
+    --bg-main: #0e1117;
+    --bg-card: #161b22;
+    --text-main: #e6edf3;
+    --text-muted: #9da7b3;
+    --primary: #58a6ff;
+    --accent: #f78166;
+    --success: #2ea043;
+    --danger: #f85149;
+}
+
+.hero {
+    background: radial-gradient(circle at top, #1f2937, #0b0f15);
+}
+
+
 * {
     margin: 0;
     padding: 0;
@@ -6,39 +22,54 @@
 }
 
 body {
-    background: #f4f7fb;
-    color: #222;
+    background: var(--bg-main);
+    color: var(--text-main);
+}
+
+.container {
+    padding: 40px;
 }
 
 /* NAVBAR */
 .navbar {
-    background: #0b3c5d;
-    color: #fff;
-    padding: 15px 30px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    background: linear-gradient(90deg, #0d1117, #161b22);
+    border-bottom: 1px solid #30363d;
 }
+
+.navbar a {
+    color: var(--text-main);
+    transition: color 0.2s ease;
+}
+
+.navbar a:hover {
+    color: var(--primary);
+}
+
 
 .navbar .logo {
     font-weight: bold;
     font-size: 20px;
 }
 
-.navbar a {
-    color: white;
-    text-decoration: none;
-    margin-left: 20px;
+
+.card, .auth-box, .booking-box {
+    background: var(--bg-card);
+    border-radius: 12px;
+    padding: 24px;
+    animation: fadeUp 0.5s ease;
 }
 
-.navbar a:hover {
-    text-decoration: underline;
+@keyframes fadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(12px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
-/* LAYOUT */
-.container {
-    padding: 40px;
-}
 
 /* AUTH */
 .auth-box {
@@ -204,31 +235,52 @@ body {
     margin-bottom: 8px;
 }
 
+/* Base seat */
 .seat {
-    width: 45px;
-    height: 45px;
-    background: #e0e0e0;
-    text-align: center;
-    line-height: 45px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 14px;
+  width: 42px;
+  height: 42px;
+  background: #2a2f36;
+  color: #e5e7eb;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 0.85rem;
+  transition: all 0.2s ease;
 }
 
-.seat:hover {
-    background: #b3d4fc;
+/* Hover */
+.seat:hover:not(.booked) {
+  background: #3b82f6;
+  transform: scale(1.05);
 }
 
+/* ✅ SELECTED SEAT (GREEN) */
 .seat.selected {
-    background: #4caf50;
-    color: white;
+  background: #22c55e !important;
+  color: #062e16;
+  font-weight: 600;
+  box-shadow: 0 0 12px rgba(34, 197, 94, 0.7);
 }
 
+/* BOOKED SEAT */
 .seat.booked {
-    background: #b71c1c;
-    color: white;
-    cursor: not-allowed;
+  background: #990f1a;
+  color: #e20f6b;
+  cursor: not-allowed;
+  opacity: 0.6;
 }
+
+@keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(46,160,67,0.6); }
+    70% { box-shadow: 0 0 0 10px rgba(46,160,67,0); }
+    100% { box-shadow: 0 0 0 0 rgba(46,160,67,0); }
+}
+
+
+
+
 
 .cancel-btn {
     background: #c62828;
@@ -254,4 +306,132 @@ body {
 
 .ticket-btn:hover {
     background: #1b5e20;
+}
+
+.seat-legend {
+    display: flex;
+    gap: 20px;
+    margin-top: 15px;
+}
+
+.legend {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border-radius: 4px;
+  margin-right: 6px;
+}
+
+.legend.available {
+  background: #2a2f36;
+}
+
+.legend.selected {
+  background: #22c55e;
+}
+
+.legend.booked {
+  background: #b30d2b;
+}
+
+
+.price-tag {
+    font-size: 22px;
+    font-weight: bold;
+    color: var(--primary);
+    animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+    0% { opacity: 0.8; }
+    50% { opacity: 1; }
+    100% { opacity: 0.8; }
+}
+
+button {
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+}
+
+.seat.booked {
+  background: #ef4444 !important; /* RED */
+  color: #ffffff !important;
+  cursor: not-allowed;
+  opacity: 0.85;
+  box-shadow: 0 0 8px rgba(239, 68, 68, 0.6);
+}
+
+/* ===== Dark Auth Box (Login / Register) ===== */
+
+.auth-box {
+  background: rgba(20, 24, 30, 0.96);
+  color: #e5e7eb;
+  border-radius: 14px;
+  padding: 32px;
+  width: 380px;
+
+  box-shadow:
+    0 20px 40px rgba(0, 0, 0, 0.7),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+
+  animation: fadeInUp 0.6s ease-out;
+}
+
+/* Heading */
+.auth-box h2 {
+  color: #f9fafb;
+  margin-bottom: 20px;
+}
+
+/* Inputs */
+.auth-box input {
+  background-color: #0f172a;
+  color: #f8fafc;
+  border: 1px solid #1e293b;
+}
+
+.auth-box input::placeholder {
+  color: #94a3b8;
+}
+
+/* Login / Register Button */
+.auth-box button {
+  background: linear-gradient(135deg, #2563eb, #1e40af);
+  color: #ffffff;
+  border: none;
+  font-weight: 600;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.auth-box button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(37, 99, 235, 0.5);
+}
+
+/* Links */
+.auth-box a {
+  color: #60a5fa;
+}
+
+/* Error message */
+.auth-box .error,
+.auth-box .flash {
+  color: #f87171;
+  margin-top: 10px;
+}
+
+/* Entry animation */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

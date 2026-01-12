@@ -19,7 +19,7 @@ def create_app():
         return User.query.get(int(user_id))
 
 
-    from models.user import User  # 🔥 THIS FIXES IT
+    from models.user import User
 
     from routes.main import main_bp
     from routes.auth import auth_bp
@@ -43,4 +43,5 @@ def create_app():
 app = create_app()
 
 if __name__ == "__main__":
-    app.run()
+    app.run(debug=True)
+

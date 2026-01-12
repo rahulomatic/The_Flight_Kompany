@@ -6,6 +6,8 @@ class Booking(db.Model):
 
     user_id = db.Column(db.Integer, nullable=False)
     flight_id = db.Column(db.Integer, nullable=False)
+    price = db.Column(db.Integer, nullable=False)
+
 
     passenger_name = db.Column(db.String(100), nullable=False)
     seat_number = db.Column(db.String(5), nullable=False)
