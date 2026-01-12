@@ -1,0 +1,35 @@
+{% extends "base.html" %} {% block title %}Search Flights{% endblock %} {% block
+content %}
+<h2>Search Flights</h2>
+
+<form method="POST" class="search-form">
+  <input type="text" name="source" placeholder="From" required />
+  <input type="text" name="destination" placeholder="To" required />
+  <button type="submit">Search</button>
+</form>
+
+{% if flights %}
+<h3>Available Flights</h3>
+
+<table class="flight-table">
+  <tr>
+    <th>Flight</th>
+    <th>Departure</th>
+    <th>Price</th>
+    <th>Seats</th>
+    <th></th>
+  </tr>
+
+  {% for flight in flights %}
+  <tr>
+    <td>{{ flight.flight_number }}</td>
+    <td>{{ flight.departure_time }}</td>
+    <td>₹{{ flight.price }}</td>
+    <td>{{ flight.available_seats }}</td>
+    <td>
+      <a href="/book/{{ flight.id }}" class="book-btn">Book</a>
+    </td>
+  </tr>
+  {% endfor %}
+</table>
+{% endif %} {% endblock %}

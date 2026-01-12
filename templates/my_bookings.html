@@ -1,0 +1,47 @@
+{% extends "base.html" %} {% block title %}My Bookings{% endblock %} {% block
+content %}
+<h2>My Bookings</h2>
+
+{% if bookings %}
+<table class="flight-table">
+  <tr>
+    <th>Flight</th>
+    <th>Route</th>
+    <th>Seat</th>
+    <th>Booked On</th>
+    <th>Action</th>
+  </tr>
+
+  {% for booking in bookings %}
+  <tr>
+    <td>
+      <a
+        href="{{ url_for('bookings.download_ticket', booking_id=booking.id) }}"
+        class="ticket-btn"
+      >
+        Download Ticket
+      </a>
+    </td>
+
+    <td>{{ flights[booking.flight_id].flight_number }}</td>
+    <td>
+      {{ flights[booking.flight_id].source }} → {{
+      flights[booking.flight_id].destination }}
+    </td>
+    <td>{{ booking.seat_number }}</td>
+    <td>{{ booking.booking_time.strftime("%d %b %Y %H:%M") }}</td>
+    <td>
+      <form
+        method="POST"
+        action="{{ url_for('bookings.cancel_booking', booking_id=booking.id) }}"
+        onsubmit="return confirm('Cancel this booking?');"
+      >
+        <button class="cancel-btn">Cancel</button>
+      </form>
+    </td>
+  </tr>
+  {% endfor %}
+</table>
+{% else %}
+<p>No bookings yet.</p>
+{% endif %}{% endblock %}

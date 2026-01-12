@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>{% block title %}The Flight Kompany{% endblock %}</title>
+
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/style.css') }}"
+    />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  </head>
+  <body>
+    <nav class="navbar">
+      <div class="logo">✈ The Flight Kompany</div>
+
+      <div class="nav-links">
+        <a href="/">Home</a>
+        <a href="/my-bookings">My Bookings</a>
+        {% if current_user.is_admin %}
+        <a href="/admin">Admin</a>
+        {% endif %}
+        <a href="/logout">Logout</a>
+      </div>
+    </nav>
+
+    <main class="container">{% block content %}{% endblock %}</main>
+  </body>
+</html>

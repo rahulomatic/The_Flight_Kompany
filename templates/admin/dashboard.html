@@ -1,0 +1,47 @@
+{% extends "base.html" %} {% block title %}Admin Panel{% endblock %} {% block
+content %}
+<h2>Admin Dashboard</h2>
+
+<h3>Add New Flight</h3>
+<form method="POST" action="/admin/add-flight" class="admin-form">
+  <input name="flight_number" placeholder="Flight Number" required />
+  <input name="source" placeholder="From" required />
+  <input name="destination" placeholder="To" required />
+  <input name="departure_time" placeholder="Departure Time" required />
+  <input name="price" placeholder="Price" required />
+  <input name="seats" placeholder="Total Seats" required />
+  <button>Add Flight</button>
+</form>
+
+<h3>All Flights</h3>
+<table class="flight-table">
+  <tr>
+    <th>Flight</th>
+    <th>Route</th>
+    <th>Seats</th>
+  </tr>
+  {% for f in flights %}
+  <tr>
+    <td>{{ f.flight_number }}</td>
+    <td>{{ f.source }} → {{ f.destination }}</td>
+    <td>{{ f.available_seats }}/{{ f.total_seats }}</td>
+  </tr>
+  {% endfor %}
+</table>
+
+<h3>All Bookings</h3>
+<table class="flight-table">
+  <tr>
+    <th>User</th>
+    <th>Flight</th>
+    <th>Seat</th>
+  </tr>
+  {% for b in bookings %}
+  <tr>
+    <td>{{ b.user_id }}</td>
+    <td>{{ b.flight_id }}</td>
+    <td>{{ b.seat_number }}</td>
+  </tr>
+  {% endfor %}
+</table>
+{% endblock %}
